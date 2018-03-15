@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Thread;
 use Illuminate\Http\Request;
 
-class Threads   Controller extends Controller
+class ThreadsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,8 @@ class Threads   Controller extends Controller
      */
     public function index()
     {
-        //
+        $threads = Thread::all();
+        return view('threads.index', compact('threads'));
     }
 
     /**
@@ -44,9 +45,10 @@ class Threads   Controller extends Controller
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function show(Thread $thread)
+    public function show(Thread $thread, $id)
     {
-        //
+        $thread = $thread->findOrFail($id);
+        return view('threads.show', compact('thread'));
     }
 
     /**

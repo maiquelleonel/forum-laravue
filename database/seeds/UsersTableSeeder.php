@@ -11,6 +11,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        factory( User::class, 50 )->create();
+        $num = env('APP_ENV') == 'testing' ? 5 : 50;
+        factory(User::class, $num)->create();
     }
 }

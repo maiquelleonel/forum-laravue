@@ -4,6 +4,7 @@ use Faker\Generator as Faker;
 use App\Reply;
 use App\Thread;
 use App\User;
+
 /*
 |--------------------------------------------------------------------------
 | Model Factories
@@ -15,35 +16,35 @@ use App\User;
 |
 */
 
-$factory->define( User::class , function (Faker $faker) {
+$factory->define(User::class, function (Faker $faker) {
     static $password;
 
     return [
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'password' => $password ?: $password = bcrypt('secret'),
+        'name'           => $faker->name,
+        'email'          => $faker->unique()->safeEmail,
+        'password'       => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
     ];
 });
 
-$factory->define( Thread::class, function (Faker $faker) {
+$factory->define(Thread::class, function (Faker $faker) {
     return [
-        'title' => $faker->sentence,
-        'text' => implode(' ', $faker->paragraphs),
-        'user_id' => function(){
-            return factory( User::class )->create()->id;
+        'title'   => $faker->sentence,
+        'body'    => implode(' ', $faker->paragraphs),
+        'user_id' => function () {
+            return factory(User::class)->create()->id;
         },
     ];
 });
 
-$factory->define( Reply::class , function (Faker $faker) {
+$factory->define(Reply::class, function (Faker $faker) {
     return [
-        'body' => $faker->paragraph ,
-        'user_id' => function(){
-            return factory( User::class )->create()->id;
+        'body'      => $faker->paragraph ,
+        'user_id'   => function () {
+            return factory(User::class)->create()->id;
         },
-        'thread_id' => function(){
-            return factory( Thread::class )->create()->id;
+        'thread_id' => function () {
+            return factory(Thread::class)->create()->id;
         }
     ];
 });

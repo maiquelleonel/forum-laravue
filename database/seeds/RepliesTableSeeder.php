@@ -13,9 +13,15 @@ class RepliesTableSeeder extends Seeder
      */
     public function run()
     {
-        $threads = factory( Thread::class, 50 )->create();
-        $threads->each( function( $thread ){
-            factory( Reply::class, rand(5, 10) )->create(['thread_id' => $thread->id ]);
+        $number = 50;
+        $random      = rand(5, 10);
+        if (env('APP_ENV') == 'testing') {
+            $number = 5;
+            $random = rand(1, 5);
+        }
+        $threads = factory(Thread::class, $number)->create();
+        $threads->each(function ($thread) use ($random) {
+            factory(Reply::class, $random)->create(['thread_id' => $thread->id]);
         });
     }
 }

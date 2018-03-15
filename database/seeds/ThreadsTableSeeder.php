@@ -12,6 +12,7 @@ class ThreadsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory( Thread::class, 50 )->create();
+        $num = env('APP_ENV') == 'testing' ? 5 : 50;
+        factory(Thread::class, $num)->create();
     }
 }

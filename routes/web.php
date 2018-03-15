@@ -11,6 +11,17 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', [
+    'as' => 'threads.index',
+    'uses' => 'ThreadsController@index',
+]);
+
+Route::get('/threads/{id}', [
+    'as' => 'threads.show',
+    'uses' => 'ThreadsController@show'
+]);
+
+Route::get('/locale/{lang}', function ($lang) {
+    session(['lang' => $lang]);
+    return back();
 });

@@ -10,7 +10,9 @@ window._ = require('lodash');
 try {
     window.$ = window.jQuery = require('jquery');
 
-    require('bootstrap-sass');
+    require('materialize-css/dist/js/materialize')
+    require('./parallax-header')
+    
 } catch (e) {}
 
 /**
