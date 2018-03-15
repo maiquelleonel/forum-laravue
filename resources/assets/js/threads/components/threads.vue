@@ -1,12 +1,12 @@
 <template>
     <div class="card">
         <div class="card-content">
-            <span class="card-title">{{title}}</span>
+            <span class="card-title">{{ title }}</span>
             <table>
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>{{ threads }}</th>
+                        <th>{{ thread }}</th>
                         <th>{{ replies }}</th>
                     </tr>
                 </thead>
@@ -25,7 +25,7 @@
 <script>
     export default {
         props: [
-            'title','threads','replies'
+            'title','thread','replies'
         ]
     }
 </script>

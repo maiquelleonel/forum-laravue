@@ -9,9 +9,9 @@
     <div class="container">
         <h3>{{ __('Most recent threads') }}</h3>
         <threads
-            title="{{ __('Threads')}}"
-            thread="{{ __('Thread')}}"
-            replies="{{ __('Reply')}}"
+            title="{{ __('Threads') }}"
+            thread="{{ __('Thread') }}"
+            replies="{{ __('Replies') }}"
         >
             @include('layouts.default.preloader')
         </threads>

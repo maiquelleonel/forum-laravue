@@ -113,7 +113,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['title', 'threads', 'replies']
+    props: ['title', 'thread', 'replies']
 });
 
 /***/ }),
@@ -134,7 +134,7 @@ var render = function() {
           _c("tr", [
             _c("th", [_vm._v("#")]),
             _vm._v(" "),
-            _c("th", [_vm._v(_vm._s(_vm.threads))]),
+            _c("th", [_vm._v(_vm._s(_vm.thread))]),
             _vm._v(" "),
             _c("th", [_vm._v(_vm._s(_vm.replies))])
           ])

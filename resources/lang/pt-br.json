@@ -3,8 +3,11 @@
     "Loading":             "Carregando",
     "Send":                "Enviar",
     "Threads":             "Tópicos",
+    "Thread":              "Tópico",
     "Replies":             "Respostas",
+    "Reply":               "Resposta",
     "replied":             "respondeu",
     "Answer":              "Responda",
-    "Your reply":          "Sua Resposta"
+    "Your reply":          "Sua Resposta",
+    "Language":            "Idioma"
 }
