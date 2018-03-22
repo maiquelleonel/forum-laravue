@@ -113,7 +113,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['title', 'thread', 'replies']
+    props: ['title', 'thread', 'replies'],
+    data: function data() {
+        return {
+            threads_res: []
+        };
+    },
+    mounted: function mounted() {
+        var _this = this;
+
+        window.axios.get('/threads').then(function (res) {
+            _this.threads_res = res.data;
+        });
+    }
 });
 
 /***/ }),
@@ -140,31 +152,27 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(0)
+        _c(
+          "tbody",
+          _vm._l(_vm.threads_res.data, function(dbthread) {
+            return _c("tr", [
+              _c("td", [_vm._v(_vm._s(dbthread.id))]),
+              _vm._v(" "),
+              _c("td", [
+                _c("a", { attrs: { href: "/threads/" + dbthread.id } }, [
+                  _vm._v(_vm._s(dbthread.title))
+                ])
+              ]),
+              _vm._v(" "),
+              _c("td", [_vm._v("32")])
+            ])
+          })
+        )
       ])
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tbody", [
-      _c("tr", [
-        _c("td", [_vm._v("1")]),
-        _vm._v(" "),
-        _c("td", [
-          _c("a", { attrs: { href: "/threads/1" } }, [
-            _vm._v("Legal esse tópico. Bem loco!")
-          ])
-        ]),
-        _vm._v(" "),
-        _c("td", [_vm._v("32")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

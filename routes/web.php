@@ -11,13 +11,12 @@
 |
 */
 
-Route::get('/', [
-    'as' => 'threads.index',
-    'uses' => 'ThreadsController@index',
-]);
+Route::get('/', function () {
+    return view('threads.index');
+});
 
 Route::get('/threads/{id}', [
-    'as' => 'threads.show',
+    'as' => 'thread.show',
     'uses' => 'ThreadsController@show'
 ]);
 
@@ -25,3 +24,19 @@ Route::get('/locale/{lang}', function ($lang) {
     session(['lang' => $lang]);
     return back();
 });
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/threads', [
+        'as' => 'threads.index',
+        'uses' => 'ThreadsController@index',
+    ]);
+
+    Route::post('/threads', [
+        'as' => 'threads.store',
+        'uses' => 'ThreadsController@store',
+    ]);
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

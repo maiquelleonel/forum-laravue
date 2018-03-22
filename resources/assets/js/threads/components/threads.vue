@@ -11,9 +11,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td><a href="/threads/1">Legal esse tópico. Bem loco!</a></td>
+                    <tr v-for="dbthread in threads_res.data">
+                        <td>{{ dbthread.id }}</td>
+                        <td><a :href="'/threads/' + dbthread.id ">{{ dbthread.title }}</a></td>
                         <td>32</td>
                     </tr>
                 </tbody>
@@ -26,6 +26,16 @@
     export default {
         props: [
             'title','thread','replies'
-        ]
+        ],
+        data() {
+            return {
+                threads_res: []
+            }
+        },
+        mounted() {
+            window.axios.get('/threads').then((res) => {
+                this.threads_res = res.data
+            })
+        }
     }
 </script>
