@@ -15,7 +15,7 @@ use App\Thread;
 
 Route::get('/', function () {
     return view('threads.index');
-});
+})->name('app.index');
 
 Route::get('/threads/{id}', [
     'as' => 'thread.show',
@@ -25,7 +25,7 @@ Route::get('/threads/{id}', [
 Route::get('/locale/{lang}', function ($lang) {
     session(['lang' => $lang]);
     return back();
-});
+})->name('locale');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/threads', [
