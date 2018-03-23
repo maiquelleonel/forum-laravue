@@ -30,14 +30,48 @@ class ThreadTest extends TestCase
     public function testStoreAction()
     {
         $user = factory(User::class)->create();
-
-        $res = $this->actingAs($user)->json('POST', '/threads', [
+        $data = [
             'title' => 'Meu primeiro tópico',
             'body'  => 'Teste! Testando! 1, 2, 3!'
-        ]);
+        ];
+
+        $res = $this->actingAs($user)
+                    ->json('POST', route('thread.store'), $data);
+
         $thread = Thread::first();
+
         $res->assertStatus(201)
             ->assertJsonFragment(['created' => 'success'])
-            ->assertJsonFragment($thread->toArray());
+            ->assertJsonFragment(['body' => $thread->body ]);
+    }
+
+    public function testUpdateAction()
+    {
+        $user = factory(User::class)->create();
+        $thread = factory(Thread::class)->create();
+        $update_data = [
+            'title' => 'Meu titulo atualizado',
+            'body'  => 'Meu conteudo atualizado',
+        ];
+
+        $res = $this->actingAs($user)
+                    ->json('PUT', route('thread.update', $thread), $update_data);
+
+        $res->assertStatus(302);
+        $this->assertEquals($update_data, Thread::first()->only('title', 'body'));
+    }
+
+    public function testEditWithInvalidData()
+    {
+        $user = factory(User::class)->create();
+        $thread = factory(Thread::class)->create();
+        $update_data = [
+            'title' => 'Meu',
+            'body'  => 'Meu conteudo atualizado',
+        ];
+        $res = $this->actingAs($user)
+                    ->json('PUT', route('thread.update', $thread), $update_data);
+        //$res->assertStatus(302);
+        $this->assertNotEquals(Thread::first()->only('title'), $update_data['title']);
     }
 }

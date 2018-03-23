@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Thread;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use App\Thread;
+use App\Http\Requests\ThreadRequest;
 
 class ThreadsController extends Controller
 {
@@ -20,6 +21,11 @@ class ThreadsController extends Controller
         return response()->json($threads);
     }
 
+    public function edit(Thread $thread)
+    {
+        return view('threads.edit', compact('thread'));
+    }
+
     public function show($id)
     {
         $thread = Thread::findOrFail($id);
@@ -31,7 +37,7 @@ class ThreadsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ThreadRequest $request)
     {
         $thread          = new Thread;
         $thread->title   = $request->title;
@@ -49,9 +55,12 @@ class ThreadsController extends Controller
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Thread $thread)
+    public function update(ThreadRequest $request, Thread $thread)
     {
-        //
+        $thread->title = $request->input('title');
+        $thread->body  = $request->input('body');
+        $thread->save();
+        return redirect()->route('thread.show', $thread);
     }
 
     /**

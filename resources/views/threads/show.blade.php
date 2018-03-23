@@ -7,6 +7,9 @@
             <div class="card-content">
                 <p>{{ $thread->body }}</p>
             </div>
+            <div class="card-action">
+                <a href="{{ route('thread.edit', $thread) }}">{{ __('Edit')}}</a>
+            </div>
         </div>
         <replies
             replied="{{ __('replied') }}"

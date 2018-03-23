@@ -1,5 +1,7 @@
 <?php
 
+use App\Thread;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,9 +33,19 @@ Route::middleware(['auth'])->group(function () {
         'uses' => 'ThreadsController@index',
     ]);
 
+    Route::get('/threads/{thread}/edit', [
+        'as' => 'thread.edit',
+        'uses' => 'ThreadsController@edit',
+    ]);
+
     Route::post('/threads', [
-        'as' => 'threads.store',
+        'as' => 'thread.store',
         'uses' => 'ThreadsController@store',
+    ]);
+
+    Route::put('/threads/{thread}', [
+        'as' => 'thread.update',
+        'uses' => 'ThreadsController@update',
     ]);
 });
 
