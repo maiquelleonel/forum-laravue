@@ -1,5 +1,7 @@
 <?php
 
+use App\Thread;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,17 +13,42 @@
 |
 */
 
-Route::get('/', [
-    'as' => 'threads.index',
-    'uses' => 'ThreadsController@index',
-]);
+Route::get('/', function () {
+    return view('threads.index');
+})->name('app.index');
 
 Route::get('/threads/{id}', [
-    'as' => 'threads.show',
+    'as' => 'thread.show',
     'uses' => 'ThreadsController@show'
 ]);
 
 Route::get('/locale/{lang}', function ($lang) {
     session(['lang' => $lang]);
     return back();
+})->name('locale');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/threads', [
+        'as' => 'threads.index',
+        'uses' => 'ThreadsController@index',
+    ]);
+
+    Route::get('/threads/{thread}/edit', [
+        'as' => 'thread.edit',
+        'uses' => 'ThreadsController@edit',
+    ]);
+
+    Route::post('/threads', [
+        'as' => 'thread.store',
+        'uses' => 'ThreadsController@store',
+    ]);
+
+    Route::put('/threads/{thread}', [
+        'as' => 'thread.update',
+        'uses' => 'ThreadsController@update',
+    ]);
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

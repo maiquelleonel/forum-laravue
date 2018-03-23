@@ -111,9 +111,52 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['title', 'thread', 'replies']
+    props: ['title', 'thread', 'replies', 'newThread', 'threadTitle', 'threadBody', 'send'],
+    data: function data() {
+        return {
+            threads_res: [],
+            new_thread: {
+                title: '',
+                body: ''
+            }
+        };
+    },
+
+    methods: {
+        save: function save() {
+            var _this = this;
+
+            window.axios.post('/threads', this.new_thread).then(function (res) {
+                _this.getThreads();
+            });
+        },
+        getThreads: function getThreads() {
+            var _this2 = this;
+
+            window.axios.get('/threads').then(function (res) {
+                _this2.threads_res = res.data;
+            });
+        }
+    },
+    mounted: function mounted() {
+        this.getThreads();
+    }
 });
 
 /***/ }),
@@ -140,31 +183,99 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(0)
+        _c(
+          "tbody",
+          _vm._l(_vm.threads_res.data, function(dbthread) {
+            return _c("tr", [
+              _c("td", [_vm._v(_vm._s(dbthread.id))]),
+              _vm._v(" "),
+              _c("td", [
+                _c("a", { attrs: { href: "/threads/" + dbthread.id } }, [
+                  _vm._v(_vm._s(dbthread.title))
+                ])
+              ]),
+              _vm._v(" "),
+              _c("td", [_vm._v("32")])
+            ])
+          })
+        )
       ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card-content" }, [
+      _c("span", { staticClass: "card-title" }, [
+        _vm._v(_vm._s(_vm.newThread))
+      ]),
+      _vm._v(" "),
+      _c(
+        "form",
+        {
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.save($event)
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "input-field" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.new_thread.title,
+                  expression: "new_thread.title"
+                }
+              ],
+              attrs: { type: "text", placeholder: _vm.threadTitle },
+              domProps: { value: _vm.new_thread.title },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.new_thread, "title", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "input-field" }, [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.new_thread.body,
+                  expression: "new_thread.body"
+                }
+              ],
+              staticClass: "materialize-textarea",
+              attrs: { placeholder: _vm.threadBody },
+              domProps: { value: _vm.new_thread.body },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.new_thread, "body", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            { staticClass: "btn red accent-2", attrs: { type: "submit" } },
+            [_vm._v(_vm._s(_vm.send))]
+          )
+        ]
+      )
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("tbody", [
-      _c("tr", [
-        _c("td", [_vm._v("1")]),
-        _vm._v(" "),
-        _c("td", [
-          _c("a", { attrs: { href: "/threads/1" } }, [
-            _vm._v("Legal esse tópico. Bem loco!")
-          ])
-        ]),
-        _vm._v(" "),
-        _c("td", [_vm._v("32")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

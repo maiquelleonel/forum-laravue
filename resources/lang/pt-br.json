@@ -9,5 +9,10 @@
     "replied":             "respondeu",
     "Answer":              "Responda",
     "Your reply":          "Sua Resposta",
-    "Language":            "Idioma"
+    "Language":            "Idioma",
+    "New thread":          "Novo tópico",
+    "Thread title":        "Título do tópico",
+    "Thread body":         "Conteúdo do tópico",
+    "Edit":                "Editar",
+    "Back":                "Voltar"
 }

@@ -7,6 +7,12 @@
             <div class="card-content">
                 <p>{{ $thread->body }}</p>
             </div>
+            <div class="card-action">
+                @if (Auth::user()->can('update', $thread))
+                    <a href="{{ route('thread.edit', $thread) }}">{{ __('Edit')}}</a>
+                @endif
+                <a href="{{ route('app.index') }}">{{ __('Back') }}</a>
+            </div>
         </div>
         <replies
             replied="{{ __('replied') }}"

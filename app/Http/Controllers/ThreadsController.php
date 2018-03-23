@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Thread;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use App\Thread;
+use App\Http\Requests\ThreadRequest;
 
 class ThreadsController extends Controller
 {
@@ -14,53 +17,36 @@ class ThreadsController extends Controller
      */
     public function index()
     {
-        $threads = Thread::all();
-        return view('threads.index', compact('threads'));
+        $threads = Thread::orderBy('updated_at', 'desc')->paginate();
+        return response()->json($threads);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function edit(Thread $thread)
     {
-        //
+        return view('threads.edit', compact('thread'));
     }
 
+    public function show($id)
+    {
+        $thread = Thread::findOrFail($id);
+        return view('threads.show', compact('thread'));
+    }
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ThreadRequest $request)
     {
-        //
+        $thread          = new Thread;
+        $thread->title   = $request->title;
+        $thread->body    = $request->body;
+        $thread->user_id = Auth::user()->id;
+        $thread->save();
+        return response()->json(['created' => 'success', 'data' => $thread->toArray()], 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Thread $thread, $id)
-    {
-        $thread = $thread->findOrFail($id);
-        return view('threads.show', compact('thread'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Thread  $thread
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Thread $thread)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -69,9 +55,12 @@ class ThreadsController extends Controller
      * @param  \App\Thread  $thread
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Thread $thread)
+    public function update(ThreadRequest $request, Thread $thread)
     {
-        //
+        $thread->title = $request->input('title');
+        $thread->body  = $request->input('body');
+        $thread->save();
+        return redirect()->route('thread.show', $thread);
     }
 
     /**
