@@ -22,7 +22,7 @@ class ThreadTest extends TestCase
         $this->seed('ThreadsTableSeeder');
         $user = factory(User::class)->create();
         $threads = Thread::orderBy('updated_at', 'desc')->paginate()->toArray();
-        $res = $this->actingAs($user)->json('GET', '/threads');
+        $res = $this->actingAs($user)->json('GET', route('threads.index'));
         $res->assertStatus(200)
             ->assertJsonFragment([ $threads['data'] ]);
     }
