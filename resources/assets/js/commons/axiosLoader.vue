@@ -1,7 +1,7 @@
 <template>
     <div id="preloader" v-show="counter">
         <div class="image">
-            <img src="/img/preloader.gif" alt="">
+            <img src="/img/preloader.gif" alt="" />
         </div>
     </div>
 </template>
@@ -38,7 +38,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.66);
 }
 #preloader .image {
     position: absolute;

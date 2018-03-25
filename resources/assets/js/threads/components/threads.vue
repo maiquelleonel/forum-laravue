@@ -14,7 +14,7 @@
                     <tr v-for="thread in threads_res.data">
                         <td>{{ thread.id }}</td>
                         <td><a :href="'/threads/' + thread.id ">{{ thread.title }}</a></td>
-                        <td>32</td>
+                        <td>{{ thread.total_replies }}</td>
                     </tr>
                 </tbody>
             </table>

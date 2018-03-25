@@ -68,11 +68,6 @@ Route::middleware(['auth'])->group(function () {
         'as' => 'reply.store',
         'uses' => 'RepliesController@store'
     ]);
-
-    Route::get('/logout', function () {
-        auth()->logout();
-        return redirect()->to(route('app.index'));
-    });
 });
 
 Auth::routes();
