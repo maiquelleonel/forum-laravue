@@ -11,9 +11,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="dbthread in threads_res.data">
-                        <td>{{ dbthread.id }}</td>
-                        <td><a :href="'/threads/' + dbthread.id ">{{ dbthread.title }}</a></td>
+                    <tr v-for="thread in threads_res.data">
+                        <td>{{ thread.id }}</td>
+                        <td><a :href="'/threads/' + thread.id ">{{ thread.title }}</a></td>
                         <td>32</td>
                     </tr>
                 </tbody>
@@ -64,6 +64,13 @@
         },
         mounted() {
             this.getThreads()
+            Echo.channel('new.thread')
+                .listen('NewThread', (e) => {
+                    console.log(e)
+                    if( e.thread ) {
+                        this.threads_res.data.unshift(e.thread)
+                    }
+                })
         }
     }
 </script>

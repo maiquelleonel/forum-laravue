@@ -12,7 +12,7 @@ try {
 
     require('materialize-css/dist/js/materialize')
     require('./parallax-header')
-    
+
 } catch (e) {}
 
 /**
@@ -45,11 +45,55 @@ if (token) {
  * allows your team to easily build robust real-time web applications.
  */
 
-// import Echo from 'laravel-echo'
+import Echo from 'laravel-echo'
 
-// window.Pusher = require('pusher-js');
+window.Pusher = require('pusher-js');
 
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: 'your-pusher-key'
-// });
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key:         '7bf6535334edbe1e7df4',
+    cluster:     'mt1',
+    encrypted:   true
+});
+
+import swal from 'sweetalert2'
+
+const successCallback = (res) => {
+    return res;
+}
+
+const errorCallback = (err) => {
+    console.log(err)
+    if (err.response.status == 401) {
+        swal({
+            title:             'Autenticação',
+            text:              'Para acessar esse recurso você precisa estar autenticado. Você será redirecionado.',
+            type:              'warning',
+            showCancelButton:  true,
+            confirmButtonText: 'Ok!',
+            cancelButtonText:  'Não, obrigado!'
+        }).then( (res) => {
+            if ( res.value ) {
+                window.location = '/login'
+            }
+        })
+    } else {
+        swal({
+            title:             'Erro!',
+            text:              'Oops! Algo deu errrado. Sorry :(',
+            type:              'error',
+            showCancelButton:  false,
+            confirmButtonText: 'Ok!'
+        })
+    }
+    return Promise.reject(err)
+}
+
+window.axios.interceptors.response.use(successCallback, errorCallback)
+
+window.Vue = require('vue')
+Vue.component('loader', require('./commons/axiosLoader.vue'))
+
+const commonApps = new Vue({
+    el: '#loader'
+})

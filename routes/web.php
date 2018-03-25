@@ -13,6 +13,15 @@ use App\Thread;
 |
 */
 
+
+Route::get('/locale/{lang}', function ($lang) {
+    session(['lang' => $lang]);
+    if ($lang == 'pt-br') {
+        putenv("DATE_FORMAT=d/m/Y H:i:s");
+    }
+    return back();
+})->name('locale');
+
 Route::get('/', function () {
     return view('threads.index');
 })->name('app.index');
@@ -22,16 +31,18 @@ Route::get('/threads/{id}', [
     'uses' => 'ThreadsController@show'
 ]);
 
-Route::get('/locale/{lang}', function ($lang) {
-    session(['lang' => $lang]);
-    return back();
-})->name('locale');
+Route::get('/threads', [
+    'as' => 'threads.index',
+    'uses' => 'ThreadsController@index',
+]);
+
+Route::get('/thread/{id}/replies', [
+    'as'   => 'replies.index',
+    'uses' => 'RepliesController@show',
+]);
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/threads', [
-        'as' => 'threads.index',
-        'uses' => 'ThreadsController@index',
-    ]);
+
 
     Route::get('/threads/{thread}/edit', [
         'as' => 'thread.edit',
@@ -46,6 +57,11 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/threads/{thread}', [
         'as' => 'thread.update',
         'uses' => 'ThreadsController@update',
+    ]);
+
+    Route::post('/thread/{thread}/reply', [
+        'as' => 'reply.store',
+        'uses' => 'RepliesController@store'
     ]);
 });
 

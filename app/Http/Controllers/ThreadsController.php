@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Thread;
 use App\Http\Requests\ThreadRequest;
 
+use App\Events\NewThread;
+
 class ThreadsController extends Controller
 {
     /**
@@ -44,7 +46,13 @@ class ThreadsController extends Controller
         $thread->body    = $request->body;
         $thread->user_id = Auth::user()->id;
         $thread->save();
-        return response()->json(['created' => 'success', 'data' => $thread->toArray()], 201);
+
+        broadcast(new NewThread($thread));
+
+        return response()->json([
+            'created' => 'success',
+            'data' => $thread->toArray()
+        ], 201);
     }
 
 
