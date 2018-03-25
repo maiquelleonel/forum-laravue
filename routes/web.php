@@ -41,8 +41,13 @@ Route::get('/thread/{id}/replies', [
     'uses' => 'RepliesController@show',
 ]);
 
-Route::middleware(['auth'])->group(function () {
+Route::get('/login/{provider}', [
+    'as'   => 'social.login',
+    'uses' => 'SocialAuthController@redirect'
+]);
+Route::get('/login/{provider}/callback', 'SocialAuthController@callback');
 
+Route::middleware(['auth'])->group(function () {
 
     Route::get('/threads/{thread}/edit', [
         'as' => 'thread.edit',
@@ -63,6 +68,11 @@ Route::middleware(['auth'])->group(function () {
         'as' => 'reply.store',
         'uses' => 'RepliesController@store'
     ]);
+
+    Route::get('/logout', function () {
+        auth()->logout();
+        return redirect()->to(route('app.index'));
+    });
 });
 
 Auth::routes();
