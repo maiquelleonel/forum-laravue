@@ -39,7 +39,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Thread::class);
     }
-    
+
     public function accounts()
     {
         return $this->hasMany(SocialAuth::class, 'user_id', 'id');

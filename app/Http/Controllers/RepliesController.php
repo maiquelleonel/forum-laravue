@@ -12,8 +12,9 @@ class RepliesController extends Controller
 {
     public function show($id)
     {
-        $thread = Thread::with('replies.user')->find($id);
-        return response()->json($thread->replies->toArray());
+        $replies = Reply::with('user')->where('thread_id', $id)->get();
+
+        return response()->json($replies->toArray());
     }
 
     public function store(ReplyRequest $request, Thread $thread)

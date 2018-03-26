@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Image;
 
 class UserPhotoObserver
 {
@@ -36,9 +37,19 @@ class UserPhotoObserver
             throw new \Exception('Extension not allowed!');
         }
         $name = bin2hex(openssl_random_pseudo_bytes(16));
-        $name = 'avatars/' . $name . '.' . $ext;
-        $user->photo->storeAs('', $name);
-        $user->photo = $name;
+        $name .= '.' . $ext;
+        $user->photo = $this->processPhoto($user->photo, $name);
+    }
+
+    protected function processPhoto($photo, $new_name)
+    {
+        $dir = 'avatars/';
+        $tmp_dir = $dir.'swp/';
+        $photo->storeAs('', $tmp_dir . $new_name);
+        $img = Image::make($photo->getRealPath());
+        $img->fit(120, 120)->save($dir . $new_name);
+        Storage::delete($tmp_dir . $new_name);
+        return $dir . $new_name;
     }
 
     protected function isValidFile($photo)

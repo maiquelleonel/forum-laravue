@@ -232,13 +232,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['replied', 'reply', 'yourAnswer', 'send', 'threadId', 'highlight', 'threadOwner'],
+    props: ['replied', 'reply', 'yourAnswer', 'send', 'threadId', 'highlight', 'threadOwner', 'threadClosed'],
     data: function data() {
         return {
-            replies: [],
+            data: [],
             thread_id: this.threadId,
+            thread_closed: this.threadClosed,
             thread_owner: this.threadOwner || false,
             new_reply: {
                 body: '',
@@ -259,7 +268,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this2 = this;
 
             window.axios.get('/threads/' + this.thread_id + '/replies').then(function (res) {
-                _this2.replies = res.data;
+                _this2.data = res.data;
             });
         }
     },
@@ -267,6 +276,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var _this3 = this;
 
         this.getReplies();
+        console.log(this.data);
         Echo.channel('new.reply.' + this.thread_id).listen('NewReply', function (e) {
             console.log(e);
             if (e.reply) {
@@ -288,51 +298,61 @@ var render = function() {
   return _c(
     "div",
     [
-      _vm._l(_vm.replies, function(reply) {
+      _vm._l(_vm.data, function(reply) {
         return _c(
           "div",
           {
-            staticClass: "card",
+            staticClass: "card horizontal",
             class: { "yellow lighten-5": !!reply.highlighted }
           },
           [
-            _c("div", { staticClass: "card-content" }, [
-              _c("div", { staticClass: "card-title" }, [
-                _c("strong", [
+            _c("div", { staticClass: "card-images" }, [
+              _c("img", { attrs: { src: "/" + reply.user.photo, alt: "" } })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-stacked" }, [
+              _c("div", { staticClass: "card-content" }, [
+                _c("div", { staticClass: "card-title" }, [
+                  _c("strong", [
+                    _vm._v(
+                      "\n                        " +
+                        _vm._s(reply.user.name) +
+                        "\n                    "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("small", [_vm._v(_vm._s(_vm.replied))])
+                ]),
+                _vm._v(" "),
+                _c("blockquote", [
                   _vm._v(
                     "\n                    " +
-                      _vm._s(reply.user.name) +
+                      _vm._s(reply.body) +
                       "\n                "
                   )
                 ]),
                 _vm._v(" "),
-                _c("small", [_vm._v(_vm._s(_vm.replied))])
-              ]),
-              _vm._v(" "),
-              _c("blockquote", [
-                _vm._v(
-                  "\n                " + _vm._s(reply.body) + "\n            "
-                )
-              ]),
-              _vm._v(" "),
-              !!_vm.thread_owner && !reply.highlighted
-                ? _c("div", { staticClass: "card-action" }, [
-                    _c(
-                      "a",
-                      {
-                        staticClass: "btn btn-link",
-                        attrs: { href: "/replies/" + reply.id + "/highlighter" }
-                      },
-                      [_vm._v(_vm._s(_vm.highlight))]
-                    )
-                  ])
-                : _vm._e()
+                !!_vm.thread_owner && !reply.highlighted
+                  ? _c("div", { staticClass: "card-action" }, [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-link",
+                          attrs: {
+                            href: "/replies/" + reply.id + "/highlighter"
+                          }
+                        },
+                        [_vm._v(_vm._s(_vm.highlight))]
+                      )
+                    ])
+                  : _vm._e()
+              ])
             ])
           ]
         )
       }),
       _vm._v(" "),
-      !!_vm.reply.thread.closed
+      _vm.thread_closed == 0
         ? _c("div", { staticClass: "card grey lighten-4" }, [
             _c("div", { staticClass: "card-content" }, [
               _c("span", { staticClass: "card-title" }, [

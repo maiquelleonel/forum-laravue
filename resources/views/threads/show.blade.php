@@ -22,6 +22,7 @@
             thread-id="{{ $thread->id }}"
             highlight="{{ __('Hightlight reply') }}"
             thread-owner="{{ \Auth::user()->can('update', $thread) }}"
+            thread-closed="{{ $thread->closed }}"
         >
         </replies>
     </div>

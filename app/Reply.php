@@ -22,6 +22,6 @@ class Reply extends Model
 
     public function thread()
     {
-        return $this->belongsTo(Thread::class);
+        return $this->belongsTo(Thread::class, 'thread_id', 'id');
     }
 }
