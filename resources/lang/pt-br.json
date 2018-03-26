@@ -26,5 +26,7 @@
     "Login with Facebook":      "Login com o Facebook",
     "Register":                 "Criar conta",
     "Remember me":              "Manter logado",
-    "Send Password Reset Link": "Enviar link para redefinir a senha"
+    "Send Password Reset Link": "Enviar link para redefinir a senha",
+    "Hightlight reply":         "Destacar resposta",
+    "Pin":                      "Fixar no topo"
 }

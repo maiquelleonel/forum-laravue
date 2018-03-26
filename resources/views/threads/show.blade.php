@@ -8,7 +8,7 @@
                 <p>{{ $thread->body }}</p>
             </div>
             <div class="card-action">
-                @if (\Auth::user() and \Auth::user()->can('update', $thread))
+                @can('update', $thread)
                     <a href="{{ route('thread.edit', $thread) }}">{{ __('Edit')}}</a>
                 @endif
                 <a href="{{ route('app.index') }}">{{ __('Back') }}</a>
@@ -18,8 +18,10 @@
             replied="{{ __('replied') }}"
             reply="{{ __('Your reply')}}"
             your-answer="{{ __('Answer')}}"
-            send="{{ __('Enviar')}}"
+            send="{{ __('Send')}}"
             thread-id="{{ $thread->id }}"
+            highlight="{{ __('Hightlight reply') }}"
+            thread-owner="{{ \Auth::user()->can('update', $thread) }}"
         >
         </replies>
     </div>

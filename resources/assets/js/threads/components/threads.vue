@@ -8,13 +8,30 @@
                         <th>#</th>
                         <th>{{ thread }}</th>
                         <th>{{ replies }}</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="thread in threads_res.data">
+                    <tr v-for="thread in threads_res.data" :class="{ 'yellow lighten-5' : !!thread.pinned }">
                         <td>{{ thread.id }}</td>
-                        <td><a :href="'/threads/' + thread.id ">{{ thread.title }}</a></td>
+                        <td>
+                            <a :href="'/threads/' + thread.id">
+                                <i class="material-icons"
+                                   style="color:red"
+                                   v-if="!!thread.pinned"
+                                >bookmark</i>
+                                {{ thread.title }}
+                            </a>
+                        </td>
                         <td>{{ thread.total_replies }}</td>
+                        <td v-if="!!can_pin">
+                            <a :href="'/threads/'+ thread.id +'/pinner'"
+                                class="waves-effect btn"
+                            >
+                                <span v-if="!!thread.pinned">{{ unpin }}</span>
+                                <span v-else>{{ pin }}</span>
+                            </a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -39,11 +56,12 @@
 <script>
     export default {
         props: [
-            'title','thread','replies','newThread','threadTitle','threadBody','send'
+            'title','thread','replies','newThread','threadTitle','threadBody','send','canPin', 'pin', 'unpin'
         ],
         data() {
             return {
                 threads_res: [],
+                can_pin: this.canPin || false,
                 new_thread: {
                     title:'',
                     body:''

@@ -12,6 +12,16 @@ use App\Events\NewThread;
 
 class ThreadsController extends Controller
 {
+
+    public function home()
+    {
+        $can_pin = false;
+        if (\Auth::user()) {
+            $user    = \Auth::user();
+            $can_pin = $user->can('pin', Thread::class);
+        }
+        return view('threads.index', compact('can_pin'));
+    }
     /**
      * Display a listing of the resource.
      *
@@ -19,7 +29,9 @@ class ThreadsController extends Controller
      */
     public function index()
     {
-        $threads = Thread::orderBy('updated_at', 'desc')->paginate();
+        $threads = Thread::orderBy('pinned', 'desc')
+                        ->orderBy('updated_at', 'desc')
+                        ->paginate();
         return response()->json($threads);
     }
 
@@ -80,5 +92,18 @@ class ThreadsController extends Controller
     public function destroy(Thread $thread)
     {
         //
+    }
+
+    public function pinner(Thread $thread)
+    {
+        $this->authorize('pin', Thread::class);
+
+        Thread::where('id', '<>', $thread->id)
+                ->update(['pinned' => false]);
+
+        $thread->pinned = !$thread->pinned;
+        $thread->save();
+
+        return back();
     }
 }

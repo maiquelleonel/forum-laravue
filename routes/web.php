@@ -1,7 +1,5 @@
 <?php
 
-use App\Thread;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,9 +20,10 @@ Route::get('/locale/{lang}', function ($lang) {
     return back();
 })->name('locale');
 
-Route::get('/', function () {
-    return view('threads.index');
-})->name('app.index');
+Route::get('/', [
+    'as'   => 'app.index',
+    'uses' => 'ThreadsController@home',
+]);
 
 Route::get('/threads/{id}', [
     'as' => 'thread.show',
@@ -36,7 +35,7 @@ Route::get('/threads', [
     'uses' => 'ThreadsController@index',
 ]);
 
-Route::get('/thread/{id}/replies', [
+Route::get('/threads/{id}/replies', [
     'as'   => 'replies.index',
     'uses' => 'RepliesController@show',
 ]);
@@ -59,17 +58,26 @@ Route::middleware(['auth'])->group(function () {
         'uses' => 'ThreadsController@store',
     ]);
 
+    Route::get('/threads/{thread}/pinner', [
+        'as' => 'thread.pinner',
+        'uses' => 'ThreadsController@pinner',
+    ]);
+
     Route::put('/threads/{thread}', [
         'as' => 'thread.update',
         'uses' => 'ThreadsController@update',
     ]);
 
-    Route::post('/thread/{thread}/reply', [
+    Route::post('/threads/{thread}/replies', [
         'as' => 'reply.store',
         'uses' => 'RepliesController@store'
+    ]);
+
+    Route::get('/replies/{reply}/highlighter', [
+        'as' => 'replies.hightlighter',
+        'uses' => 'RepliesController@highlighter',
     ]);
 });
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/home', 'HomeController@index')->name('home');

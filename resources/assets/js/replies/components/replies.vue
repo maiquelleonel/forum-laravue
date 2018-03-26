@@ -1,11 +1,19 @@
 <template>
     <div>
-        <div class="card" v-for="reply in replies">
+        <div class="card" v-for="reply in replies" :class="{ 'yellow lighten-5' : !!reply.highlighted }">
             <div class="card-content">
-                <span class="card-title"><strong>{{ reply.user.name }}</strong> {{ replied }} <em class="right"><small>{{ reply.created_at }}</small></em></span>
+                <div class="card-title">
+                    <strong>
+                        {{ reply.user.name }}
+                    </strong>
+                    <small>{{ replied }}</small>
+                </div>
                 <blockquote>
                     {{ reply.body }}
                 </blockquote>
+                <div class="card-action" v-if="(!!thread_owner && !reply.highlighted)">
+                    <a :href="'/replies/' + reply.id + '/highlighter'" class="btn btn-link">{{ highlight }}</a>
+                </div>
             </div>
         </div>
         <div class="card grey lighten-4">
@@ -28,12 +36,13 @@
 <script>
     export default {
         props:[
-            'replied','reply','yourAnswer','send','threadId'
+            'replied','reply','yourAnswer','send','threadId', 'highlight','threadOwner'
         ],
         data(){
             return {
                 replies: [],
                 thread_id: this.threadId,
+                thread_owner: this.threadOwner || false,
                 new_reply: {
                     body: '',
                     thread_id: this.threadId
@@ -42,12 +51,12 @@
         },
         methods: {
             save(){
-                window.axios.post('/thread/' + this.thread_id + '/reply', this.new_reply ).then((res) => {
+                window.axios.post('/threads/' + this.thread_id + '/replies', this.new_reply ).then((res) => {
                     this.getReplies()
                 })
             },
             getReplies() {
-                window.axios.get('/thread/' + this.thread_id + '/replies').then((res) => {
+                window.axios.get('/threads/' + this.thread_id + '/replies').then((res) => {
                     this.replies = res.data;
                 })
             }
