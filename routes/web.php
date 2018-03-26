@@ -82,6 +82,16 @@ Route::middleware(['auth'])->group(function () {
         'as' => 'replies.hightlighter',
         'uses' => 'RepliesController@highlighter',
     ]);
+
+    Route::get('/user/profile', [
+        'as' => 'user.profile',
+        'uses' => 'ProfileController@edit',
+    ]);
+
+    Route::put('/user/update', [
+        'as' => 'user.update',
+        'uses' => 'ProfileController@update',
+    ]);
 });
 
 Auth::routes();
