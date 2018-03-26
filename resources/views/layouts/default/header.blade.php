@@ -5,7 +5,7 @@
     </ul>
     @if (\Auth::user())
         <ul id="user" class="dropdown-content">
-            <li><a href="/profile">{{ __('Profile') }}</a></li>
+            <li><a href="{{ route('user.profile')}} ">{{ __('Profile') }}</a></li>
             <li>
                 <a href="{{ route('logout') }}"
                     onclick="event.preventDefault();
