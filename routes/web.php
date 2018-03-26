@@ -63,6 +63,11 @@ Route::middleware(['auth'])->group(function () {
         'uses' => 'ThreadsController@pinner',
     ]);
 
+    Route::get('/threads/{thread}/closer', [
+        'as' => 'thread.closer',
+        'uses' => 'ThreadsController@closer',
+    ]);
+
     Route::put('/threads/{thread}', [
         'as' => 'thread.update',
         'uses' => 'ThreadsController@update',

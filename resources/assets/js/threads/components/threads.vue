@@ -8,11 +8,13 @@
                         <th>#</th>
                         <th>{{ thread }}</th>
                         <th>{{ replies }}</th>
-                        <th></th>
+                        <th v-if="!!is_admin" colspan="2"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="thread in threads_res.data" :class="{ 'yellow lighten-5' : !!thread.pinned }">
+                    <tr v-for="thread in threads_res.data"
+                        :class="{ 'yellow lighten-5' : !!thread.pinned, 'grey lighten-3' : !!thread.closed }"
+                        >
                         <td>{{ thread.id }}</td>
                         <td>
                             <a :href="'/threads/' + thread.id">
@@ -24,10 +26,14 @@
                             </a>
                         </td>
                         <td>{{ thread.total_replies }}</td>
-                        <td v-if="!!can_pin">
-                            <a :href="'/threads/'+ thread.id +'/pinner'"
-                                class="waves-effect btn"
-                            >
+                        <td v-if="!!is_admin">
+                            <a :href="'/threads/'+thread.id+'/closer'">
+                                <span v-if="!!thread.closed">{{ open }}</span>
+                                <span v-else>{{ close }}</span>
+                            </a>
+                        </td>
+                        <td v-if="!!is_admin">
+                            <a :href="'/threads/'+ thread.id +'/pinner'">
                                 <span v-if="!!thread.pinned">{{ unpin }}</span>
                                 <span v-else>{{ pin }}</span>
                             </a>
@@ -56,12 +62,13 @@
 <script>
     export default {
         props: [
-            'title','thread','replies','newThread','threadTitle','threadBody','send','canPin', 'pin', 'unpin'
+            'title','thread','replies','newThread','threadTitle',
+            'threadBody','send','isAdmin', 'pin', 'unpin', 'open','close'
         ],
         data() {
             return {
                 threads_res: [],
-                can_pin: this.canPin || false,
+                is_admin: this.isAdmin || false,
                 new_thread: {
                     title:'',
                     body:''

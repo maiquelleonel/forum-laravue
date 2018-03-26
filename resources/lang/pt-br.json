@@ -15,6 +15,8 @@
     "Thread body":              "Conteúdo do tópico",
     "Edit":                     "Editar",
     "Back":                     "Voltar",
+    "Open":                     "Abrir",
+    "Close":                    "Fechar",
     "Name":                     "Nome",
     "Password":                 "Senha",
     "Profile":                  "Perfil",
@@ -28,5 +30,6 @@
     "Remember me":              "Manter logado",
     "Send Password Reset Link": "Enviar link para redefinir a senha",
     "Hightlight reply":         "Destacar resposta",
-    "Pin":                      "Fixar no topo"
+    "Pin":                      "Fixar",
+    "Unpin":                    "Desfixar"
 }

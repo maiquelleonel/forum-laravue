@@ -16,7 +16,7 @@
                 </div>
             </div>
         </div>
-        <div class="card grey lighten-4">
+        <div class="card grey lighten-4" v-if="!!reply.thread.closed">
             <div class="card-content">
                 <span class="card-title">{{ yourAnswer }}</span>
                 <form @submit.prevent="save">

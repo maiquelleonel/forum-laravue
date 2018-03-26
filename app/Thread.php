@@ -19,4 +19,9 @@ class Thread extends Model
                     ->orderBy('highlighted', 'DESC')
                     ->orderBy('id', 'DESC');
     }
+
+    public function getIsOpenAttribute()
+    {
+        return !$this->closed;
+    }
 }

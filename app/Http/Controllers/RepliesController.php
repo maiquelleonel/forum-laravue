@@ -18,15 +18,19 @@ class RepliesController extends Controller
 
     public function store(ReplyRequest $request, Thread $thread)
     {
-        $reply            = new Reply;
-        $reply->body      = $request->input('body');
-        $reply->user_id   = \Auth::user()->id;
-        $reply->thread_id = $thread->id;
-        $reply->save();
+        if ($thread->isOpen) {
+            $reply            = new Reply;
+            $reply->body      = $request->input('body');
+            $reply->user_id   = \Auth::user()->id;
+            $reply->thread_id = $thread->id;
+            $reply->save();
 
-        broadcast(new NewReply($reply));
+            broadcast(new NewReply($reply));
 
-        return response()->json($reply, 201);
+            return response()->json($reply, 201);
+        } else {
+            return response()->json(['error' => 'This thread is closed!'], 403);
+        }
     }
 
     public function highlighter(Reply $reply)

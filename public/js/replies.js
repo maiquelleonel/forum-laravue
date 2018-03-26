@@ -332,59 +332,61 @@ var render = function() {
         )
       }),
       _vm._v(" "),
-      _c("div", { staticClass: "card grey lighten-4" }, [
-        _c("div", { staticClass: "card-content" }, [
-          _c("span", { staticClass: "card-title" }, [
-            _vm._v(_vm._s(_vm.yourAnswer))
-          ]),
-          _vm._v(" "),
-          _c(
-            "form",
-            {
-              on: {
-                submit: function($event) {
-                  $event.preventDefault()
-                  return _vm.save($event)
-                }
-              }
-            },
-            [
-              _c("div", { staticClass: "input-field" }, [
-                _c("textarea", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.new_reply.body,
-                      expression: "new_reply.body"
-                    }
-                  ],
-                  staticClass: "materialize-textarea",
-                  attrs: { rows: "10", placeholder: _vm.reply },
-                  domProps: { value: _vm.new_reply.body },
+      !!_vm.reply.thread.closed
+        ? _c("div", { staticClass: "card grey lighten-4" }, [
+            _c("div", { staticClass: "card-content" }, [
+              _c("span", { staticClass: "card-title" }, [
+                _vm._v(_vm._s(_vm.yourAnswer))
+              ]),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
                   on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.new_reply, "body", $event.target.value)
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.save($event)
                     }
                   }
-                }),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn red accent-2",
-                    attrs: { type: "submit" }
-                  },
-                  [_vm._v(_vm._s(_vm.send))]
-                )
-              ])
-            ]
-          )
-        ])
-      ])
+                },
+                [
+                  _c("div", { staticClass: "input-field" }, [
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.new_reply.body,
+                          expression: "new_reply.body"
+                        }
+                      ],
+                      staticClass: "materialize-textarea",
+                      attrs: { rows: "10", placeholder: _vm.reply },
+                      domProps: { value: _vm.new_reply.body },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(_vm.new_reply, "body", $event.target.value)
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn red accent-2",
+                        attrs: { type: "submit" }
+                      },
+                      [_vm._v(_vm._s(_vm.send))]
+                    )
+                  ])
+                ]
+              )
+            ])
+          ])
+        : _vm._e()
     ],
     2
   )

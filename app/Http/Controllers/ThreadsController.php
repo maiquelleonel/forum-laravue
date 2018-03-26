@@ -18,9 +18,9 @@ class ThreadsController extends Controller
         $can_pin = false;
         if (\Auth::user()) {
             $user    = \Auth::user();
-            $can_pin = $user->can('pin', Thread::class);
+            $isAdmin = $user->can('pin', Thread::class);
         }
-        return view('threads.index', compact('can_pin'));
+        return view('threads.index', compact('isAdmin'));
     }
     /**
      * Display a listing of the resource.
@@ -30,7 +30,7 @@ class ThreadsController extends Controller
     public function index()
     {
         $threads = Thread::orderBy('pinned', 'desc')
-                        ->orderBy('updated_at', 'desc')
+                        ->orderBy('created_at', 'desc')
                         ->paginate();
         return response()->json($threads);
     }
@@ -102,6 +102,16 @@ class ThreadsController extends Controller
                 ->update(['pinned' => false]);
 
         $thread->pinned = !$thread->pinned;
+        $thread->save();
+
+        return back();
+    }
+
+    public function closer(Thread $thread)
+    {
+        $this->authorize('close', Thread::class);
+
+        $thread->closed = !$thread->closed;
         $thread->save();
 
         return back();

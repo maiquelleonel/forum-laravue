@@ -252,13 +252,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['title', 'thread', 'replies', 'newThread', 'threadTitle', 'threadBody', 'send', 'canPin', 'pin', 'unpin'],
+    props: ['title', 'thread', 'replies', 'newThread', 'threadTitle', 'threadBody', 'send', 'isAdmin', 'pin', 'unpin', 'open', 'close'],
     data: function data() {
         return {
             threads_res: [],
-            can_pin: this.canPin || false,
+            is_admin: this.isAdmin || false,
             new_thread: {
                 title: '',
                 body: ''
@@ -317,7 +323,7 @@ var render = function() {
             _vm._v(" "),
             _c("th", [_vm._v(_vm._s(_vm.replies))]),
             _vm._v(" "),
-            _c("th")
+            !!_vm.is_admin ? _c("th", { attrs: { colspan: "2" } }) : _vm._e()
           ])
         ]),
         _vm._v(" "),
@@ -326,7 +332,12 @@ var render = function() {
           _vm._l(_vm.threads_res.data, function(thread) {
             return _c(
               "tr",
-              { class: { "yellow lighten-5": !!thread.pinned } },
+              {
+                class: {
+                  "yellow lighten-5": !!thread.pinned,
+                  "grey lighten-3": !!thread.closed
+                }
+              },
               [
                 _c("td", [_vm._v(_vm._s(thread.id))]),
                 _vm._v(" "),
@@ -352,12 +363,27 @@ var render = function() {
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(thread.total_replies))]),
                 _vm._v(" "),
-                !!_vm.can_pin
+                !!_vm.is_admin
                   ? _c("td", [
                       _c(
                         "a",
                         {
-                          staticClass: "waves-effect btn",
+                          attrs: { href: "/threads/" + thread.id + "/closer" }
+                        },
+                        [
+                          !!thread.closed
+                            ? _c("span", [_vm._v(_vm._s(_vm.open))])
+                            : _c("span", [_vm._v(_vm._s(_vm.close))])
+                        ]
+                      )
+                    ])
+                  : _vm._e(),
+                _vm._v(" "),
+                !!_vm.is_admin
+                  ? _c("td", [
+                      _c(
+                        "a",
+                        {
                           attrs: { href: "/threads/" + thread.id + "/pinner" }
                         },
                         [
