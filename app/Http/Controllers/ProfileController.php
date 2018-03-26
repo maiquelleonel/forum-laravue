@@ -26,8 +26,27 @@ class ProfileController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+        ]);
+
+        $user        = \Auth::user();
+        $user->name  = $request->input('name');
+        $user->email = $request->input('email');
+        $user->photo = $request->file('photo');
+
+        if ($request->input('password')) {
+            $this->validate($request, [
+                'password' => 'string|min:6|confirmed',
+            ]);
+            $user->password = bcrypt($request->password);
+        }
+
+        $user->save();
+
+        return back();
     }
 }

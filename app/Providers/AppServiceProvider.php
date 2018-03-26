@@ -5,7 +5,9 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 
 use App\Reply;
+use App\User;
 use App\Observers\ReplyObserver;
+use App\Observers\UserPhotoObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Reply::observe(ReplyObserver::class);
+        User::observe(UserPhotoObserver::class);
     }
 
     /**
