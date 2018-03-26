@@ -3,10 +3,10 @@
 namespace App\Policies;
 
 use App\User;
-use App\Thread;
+use App\Reply;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ThreadsPolicy
+class RepliesPolicy
 {
     use HandlesAuthorization;
 
@@ -20,13 +20,8 @@ class ThreadsPolicy
         //
     }
 
-    public function update(User $user, Thread $thread)
+    public function highlight(User $user, Reply $reply)
     {
-        return $user->id === $thread->user_id || $user->role === 'admin';
-    }
-
-    public function pin(User $user)
-    {
-        return $user->role === 'admin';
+        return $user->id === $reply->thread->user_id or $user->role === 'admin';
     }
 }

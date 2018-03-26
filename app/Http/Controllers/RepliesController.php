@@ -12,8 +12,8 @@ class RepliesController extends Controller
 {
     public function show($id)
     {
-        $replies = Reply::with('user')->where('thread_id', $id)->get();
-        return response()->json($replies->toArray());
+        $thread = Thread::with('replies.user')->find($id);
+        return response()->json($thread->replies->toArray());
     }
 
     public function store(ReplyRequest $request, Thread $thread)
@@ -27,5 +27,23 @@ class RepliesController extends Controller
         broadcast(new NewReply($reply));
 
         return response()->json($reply, 201);
+    }
+
+    public function highlighter(Reply $reply)
+    {
+        $this->authorize('highlight', $reply);
+
+        Reply::where([
+            ['thread_id', '=', $reply->thread_id],
+            ['id', '<>', $reply->id],
+        ])
+        ->update([
+            'highlighted' => false,
+        ]);
+
+        $reply->highlighted = true;
+        $reply->save();
+
+        return back();
     }
 }

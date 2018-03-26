@@ -235,12 +235,30 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['title', 'thread', 'replies', 'newThread', 'threadTitle', 'threadBody', 'send'],
+    props: ['title', 'thread', 'replies', 'newThread', 'threadTitle', 'threadBody', 'send', 'canPin', 'pin', 'unpin'],
     data: function data() {
         return {
             threads_res: [],
+            can_pin: this.canPin || false,
             new_thread: {
                 title: '',
                 body: ''
@@ -297,24 +315,61 @@ var render = function() {
             _vm._v(" "),
             _c("th", [_vm._v(_vm._s(_vm.thread))]),
             _vm._v(" "),
-            _c("th", [_vm._v(_vm._s(_vm.replies))])
+            _c("th", [_vm._v(_vm._s(_vm.replies))]),
+            _vm._v(" "),
+            _c("th")
           ])
         ]),
         _vm._v(" "),
         _c(
           "tbody",
           _vm._l(_vm.threads_res.data, function(thread) {
-            return _c("tr", [
-              _c("td", [_vm._v(_vm._s(thread.id))]),
-              _vm._v(" "),
-              _c("td", [
-                _c("a", { attrs: { href: "/threads/" + thread.id } }, [
-                  _vm._v(_vm._s(thread.title))
-                ])
-              ]),
-              _vm._v(" "),
-              _c("td", [_vm._v(_vm._s(thread.total_replies))])
-            ])
+            return _c(
+              "tr",
+              { class: { "yellow lighten-5": !!thread.pinned } },
+              [
+                _c("td", [_vm._v(_vm._s(thread.id))]),
+                _vm._v(" "),
+                _c("td", [
+                  _c("a", { attrs: { href: "/threads/" + thread.id } }, [
+                    !!thread.pinned
+                      ? _c(
+                          "i",
+                          {
+                            staticClass: "material-icons",
+                            staticStyle: { color: "red" }
+                          },
+                          [_vm._v("bookmark")]
+                        )
+                      : _vm._e(),
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(thread.title) +
+                        "\n                        "
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(thread.total_replies))]),
+                _vm._v(" "),
+                !!_vm.can_pin
+                  ? _c("td", [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "waves-effect btn",
+                          attrs: { href: "/threads/" + thread.id + "/pinner" }
+                        },
+                        [
+                          !!thread.pinned
+                            ? _c("span", [_vm._v(_vm._s(_vm.unpin))])
+                            : _c("span", [_vm._v(_vm._s(_vm.pin))])
+                        ]
+                      )
+                    ])
+                  : _vm._e()
+              ]
+            )
           })
         )
       ])

@@ -7,7 +7,8 @@
         </div>
     </div>
     <div class="container">
-        <h3>{{ __('Most recent threads') }}</h3>
+        <h3>{{ __('Most recent threads') }}
+    </h3>
         <threads
             title="{{ __('Threads') }}"
             thread="{{ __('Thread') }}"
@@ -16,6 +17,9 @@
             thread-title="{{ __('Thread title') }}"
             thread-body="{{ __('Thread body') }}"
             send="{{ __('Send') }}"
+            can-pin="{{ $can_pin }}"
+            pin="{{ __('Pin') }}"
+            unpin="{{ __('Unpin') }}"
         >
             @include('layouts.default.preloader')
         </threads>

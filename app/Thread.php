@@ -15,6 +15,8 @@ class Thread extends Model
 
     public function replies()
     {
-        return $this->hasMany(Reply::class)->orderBy('id', 'DESC');
+        return $this->hasMany(Reply::class)
+                    ->orderBy('highlighted', 'DESC')
+                    ->orderBy('id', 'DESC');
     }
 }

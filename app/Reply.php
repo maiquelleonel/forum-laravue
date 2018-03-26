@@ -10,6 +10,10 @@ use App\Thread;
 class Reply extends Model
 {
     //use DateFormat;
+    protected $fillable =[
+        'highlighted',
+    ];
+
 
     public function user()
     {

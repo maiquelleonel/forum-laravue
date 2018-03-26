@@ -5,7 +5,9 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Thread;
+use App\Reply;
 use App\Policies\ThreadsPolicy;
+use App\Policies\RepliesPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -16,6 +18,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Thread::class => ThreadsPolicy::class,
+        Reply::class  => RepliesPolicy::class,
     ];
 
     /**
@@ -26,7 +29,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        //
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddTotalRepliesInTableThread extends Migration
+class AddRoleFieldOnUsers extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddTotalRepliesInTableThread extends Migration
      */
     public function up()
     {
-        Schema::table('threads', function (Blueprint $table) {
-            $table->integer('total_replies')->unsigned()->default(0);
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('role')->default('user');
         });
     }
 
@@ -25,8 +25,8 @@ class AddTotalRepliesInTableThread extends Migration
      */
     public function down()
     {
-        Schema::table('threads', function (Blueprint $table) {
-            $table->dropColumn('total_replies');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('role');
         });
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 use App\Thread;
 use App\Reply;
 use Illuminate\Database\Seeder;

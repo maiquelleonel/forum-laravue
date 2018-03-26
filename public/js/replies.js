@@ -224,13 +224,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['replied', 'reply', 'yourAnswer', 'send', 'threadId'],
+    props: ['replied', 'reply', 'yourAnswer', 'send', 'threadId', 'highlight', 'threadOwner'],
     data: function data() {
         return {
             replies: [],
             thread_id: this.threadId,
+            thread_owner: this.threadOwner || false,
             new_reply: {
                 body: '',
                 thread_id: this.threadId
@@ -242,14 +251,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         save: function save() {
             var _this = this;
 
-            window.axios.post('/thread/' + this.thread_id + '/reply', this.new_reply).then(function (res) {
+            window.axios.post('/threads/' + this.thread_id + '/replies', this.new_reply).then(function (res) {
                 _this.getReplies();
             });
         },
         getReplies: function getReplies() {
             var _this2 = this;
 
-            window.axios.get('/thread/' + this.thread_id + '/replies').then(function (res) {
+            window.axios.get('/threads/' + this.thread_id + '/replies').then(function (res) {
                 _this2.replies = res.data;
             });
         }
@@ -280,23 +289,47 @@ var render = function() {
     "div",
     [
       _vm._l(_vm.replies, function(reply) {
-        return _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-content" }, [
-            _c("span", { staticClass: "card-title" }, [
-              _c("strong", [_vm._v(_vm._s(reply.user.name))]),
-              _vm._v(" " + _vm._s(_vm.replied) + " "),
-              _c("em", { staticClass: "right" }, [
-                _c("small", [_vm._v(_vm._s(reply.created_at))])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("blockquote", [
-              _vm._v(
-                "\n                " + _vm._s(reply.body) + "\n            "
-              )
+        return _c(
+          "div",
+          {
+            staticClass: "card",
+            class: { "yellow lighten-5": !!reply.highlighted }
+          },
+          [
+            _c("div", { staticClass: "card-content" }, [
+              _c("div", { staticClass: "card-title" }, [
+                _c("strong", [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(reply.user.name) +
+                      "\n                "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("small", [_vm._v(_vm._s(_vm.replied))])
+              ]),
+              _vm._v(" "),
+              _c("blockquote", [
+                _vm._v(
+                  "\n                " + _vm._s(reply.body) + "\n            "
+                )
+              ]),
+              _vm._v(" "),
+              !!_vm.thread_owner && !reply.highlighted
+                ? _c("div", { staticClass: "card-action" }, [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "btn btn-link",
+                        attrs: { href: "/replies/" + reply.id + "/highlighter" }
+                      },
+                      [_vm._v(_vm._s(_vm.highlight))]
+                    )
+                  ])
+                : _vm._e()
             ])
-          ])
-        ])
+          ]
+        )
       }),
       _vm._v(" "),
       _c("div", { staticClass: "card grey lighten-4" }, [
