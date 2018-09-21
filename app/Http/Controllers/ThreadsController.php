@@ -16,6 +16,7 @@ class ThreadsController extends Controller
     public function home()
     {
         $can_pin = false;
+        $isAdmin = false;
         if (\Auth::user()) {
             $user    = \Auth::user();
             $isAdmin = $user->can('pin', Thread::class);

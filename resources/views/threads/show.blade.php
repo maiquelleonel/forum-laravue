@@ -21,7 +21,7 @@
             send="{{ __('Send')}}"
             thread-id="{{ $thread->id }}"
             highlight="{{ __('Hightlight reply') }}"
-            thread-owner="{{ \Auth::user()->can('update', $thread) }}"
+            thread-owner="{{ \Auth::user() ? \Auth::user()->can('update', $thread) : false }}"
             thread-closed="{{ $thread->closed }}"
         >
         </replies>
